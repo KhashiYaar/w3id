@@ -3,12 +3,12 @@
 
 RewriteEngine On
 
-SetEnvIf Request_URI ^/pmd/matsus/?$                         ONT_BASE=https://khashiyaar.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
-SetEnvIf Request_URI ^/pmd/matsus/dev/?$                     ONT_BASE=https://khashiyaar.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
-SetEnvIf Request_URI ^/pmd/matsus/dev/(.*)$                  ONT_BASE=https://khashiyaar.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
-SetEnvIf Request_URI ^/pmd/matsus/(\d+\.\d+\.\d+)/?$        ONT_BASE=https://khashiyaar.github.io/material-sustainability-application-ontology ONT_DOC=/$1/doc
-SetEnvIf Request_URI ^/pmd/matsus/(\d+\.\d+\.\d+)/(.*)$     ONT_BASE=https://khashiyaar.github.io/material-sustainability-application-ontology ONT_DOC=/$1/doc ONT_ANCHOR=$2
-SetEnvIf Request_URI ^/pmd/matsus/(MATSUS_[0-9]+)$           ONT_BASE=https://khashiyaar.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
+SetEnvIf Request_URI ^/pmd/matsus/?$                         ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
+SetEnvIf Request_URI ^/pmd/matsus/dev/?$                     ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
+SetEnvIf Request_URI ^/pmd/matsus/dev/(.*)$                  ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
+SetEnvIf Request_URI ^/pmd/matsus/(\d+\.\d+\.\d+)/?$        ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/$1/doc
+SetEnvIf Request_URI ^/pmd/matsus/(\d+\.\d+\.\d+)/(.*)$     ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/$1/doc ONT_ANCHOR=$2
+SetEnvIf Request_URI ^/pmd/matsus/(MATSUS_[0-9]+)$           ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
 
 # HTML
 RewriteCond %{HTTP_ACCEPT} !application/rdf\+xml.*(text/html|application/xhtml\+xml)
