@@ -1,43 +1,41 @@
-# MatSus permanent URI configuration
+# .htaccess for Platform MaterialDigital vocabularies - MatSus
 # Canonical namespace: https://w3id.org/pmd/matsus/
+# Maintainer: Dr. Khashayar Razghandi [@KhashiYaar]
 
 RewriteEngine On
 
-SetEnvIf Request_URI ^/pmd/matsus/?$                         ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
-SetEnvIf Request_URI ^/pmd/matsus/dev/?$                     ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
-SetEnvIf Request_URI ^/pmd/matsus/dev/(.*)$                  ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
-SetEnvIf Request_URI ^/pmd/matsus/(\d+\.\d+\.\d+)/?$        ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/$1/doc
-SetEnvIf Request_URI ^/pmd/matsus/(\d+\.\d+\.\d+)/(.*)$     ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/$1/doc ONT_ANCHOR=$2
-SetEnvIf Request_URI ^/pmd/matsus/(MATSUS_[0-9]+)$           ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
+# Current development publication
+SetEnvIf Request_URI ^/pmd/matsus/?$                            ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
+SetEnvIf Request_URI ^/pmd/matsus/dev/?$                        ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc
+SetEnvIf Request_URI ^/pmd/matsus/(MATSUS_[0-9]+)/?$            ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
+SetEnvIf Request_URI ^/pmd/matsus/dev/(MATSUS_[0-9]+)/?$        ONT_BASE=https://materialdigital.github.io/material-sustainability-application-ontology ONT_DOC=/dev/doc ONT_ANCHOR=$1
 
-# HTML
-RewriteCond %{HTTP_ACCEPT} !application/rdf\+xml.*(text/html|application/xhtml\+xml)
-RewriteCond %{HTTP_ACCEPT} text/html [OR]
-RewriteCond %{HTTP_ACCEPT} application/xhtml\+xml
-RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/index-en.html#%{ENV:ONT_ANCHOR} [R=303,L,NE]
+# Turtle
+RewriteCond %{ENV:ONT_BASE} !^$
+RewriteCond %{HTTP_ACCEPT} text/turtle
+RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/ontology.ttl [R=303,L]
 
 # JSON-LD
+RewriteCond %{ENV:ONT_BASE} !^$
 RewriteCond %{HTTP_ACCEPT} application/ld\+json
 RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/ontology.jsonld [R=303,L]
 
 # RDF/XML
-RewriteCond %{HTTP_ACCEPT} \*/\* [OR]
+RewriteCond %{ENV:ONT_BASE} !^$
 RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
 RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/ontology.owl [R=303,L]
 
 # N-Triples
+RewriteCond %{ENV:ONT_BASE} !^$
 RewriteCond %{HTTP_ACCEPT} application/n-triples
 RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/ontology.nt [R=303,L]
 
-# Turtle
-RewriteCond %{HTTP_ACCEPT} text/turtle [OR]
-RewriteCond %{HTTP_ACCEPT} text/\* [OR]
-RewriteCond %{HTTP_ACCEPT} \*/turtle
-RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/ontology.ttl [R=303,L]
+# HTML
+RewriteCond %{ENV:ONT_BASE} !^$
+RewriteCond %{HTTP_ACCEPT} text/html [OR]
+RewriteCond %{HTTP_ACCEPT} application/xhtml\+xml
+RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/index-en.html#%{ENV:ONT_ANCHOR} [R=303,L,NE]
 
-# Unsupported representation
-RewriteCond %{HTTP_ACCEPT} .+
-RewriteRule ^.*$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/406.html [R=406,L]
-
-# Default: RDF/XML
-RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/ontology.owl [R=303,L]
+# Default: human-readable documentation
+RewriteCond %{ENV:ONT_BASE} !^$
+RewriteRule ^(.*)$ %{ENV:ONT_BASE}%{ENV:ONT_DOC}/index-en.html#%{ENV:ONT_ANCHOR} [R=303,L,NE]
